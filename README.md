@@ -10,11 +10,24 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Download the app
+
+   expo go 다운로드
+
+3. Start the app
 
    ```bash
    npx expo start
    ```
+
+4. Start the app
+
+   터미널에 뜨는 QR 코드 스캔
+
+
+
+
+
 
 In the output, you'll find options to open the app in a
 
