@@ -15,11 +15,13 @@ import StatusScreen from "../../(tabs)/home/status";
 import VoiceRecordScreen from "../../(tabs)/home/voice";
 import QuestionScreen from "../../(tabs)/home/question";
 import HealthDataScreen from "../../(tabs)/home/health-data";
+import ReceiveScreen from "../../(tabs)/home/receive"; // ← 수신(필터+목록)
+import ReceiveDetailScreen from "../../(tabs)/home/recieve-detail"; // (옵션) 슬라이드 내에서 상세 띄우고 싶을 때
 
 const { width: SCREEN_W } = Dimensions.get("window");
 
 // 패널 상태 타입
-type ActiveKey = "status" | "voice" | "question" | "health-data";
+type ActiveKey = "status" | "voice" | "question" | "health-data" | "receive";
 
 export default function CentralPanel() {
   const [active, setActive] = useState<ActiveKey | null>(null);
@@ -54,31 +56,25 @@ export default function CentralPanel() {
   });
 
   const headerTitle =
-    active === "status"
-      ? "오늘의 건강 상태"
-      : active === "voice"
-      ? "음성 기록 변환"
-      : active === "question"
-      ? "질문지"
-      : "건강 데이터";
+    active === "status" ? "오늘의 건강 상태"
+    : active === "voice" ? "음성 기록 변환"
+    : active === "question" ? "질문지"
+    : active === "health-data" ? "건강 데이터"
+    : "병원 전송 결과 조회";
 
   const headerSub =
-    active === "status"
-      ? "요약 · 주요 지표 · 메모"
-      : active === "voice"
-      ? "사투리/일상어 → 표준어/전문의료어"
-      : active === "question"
-      ? "보호자가 입력 · 샘플 음성→텍스트"
-      : "최근 7·30일 요약/차트";
+    active === "status" ? "요약 · 주요 지표 · 메모"
+    : active === "voice" ? "사투리/일상어 → 표준어/전문의료어"
+    : active === "question" ? "보호자가 입력 · 샘플 음성→텍스트"
+    : active === "health-data" ? "최근 7·30일 요약/차트"
+    : "병원/기간 필터 후 리스트에서 선택";
 
   const headerBadge =
-    active === "status"
-      ? "STATUS"
-      : active === "voice"
-      ? "VOICE"
-      : active === "question"
-      ? "QUESTION"
-      : "DATA";
+    active === "status" ? "STATUS"
+    : active === "voice" ? "VOICE"
+    : active === "question" ? "QUESTION"
+    : active === "health-data" ? "DATA"
+    : "RECEIVE";
 
   return (
     <View style={{ flex: 1 }}>
@@ -93,7 +89,6 @@ export default function CentralPanel() {
           desc="Today"
           onPress={() => openScreen("status")}
         />
-
         <Card
           icon={<Ionicons name="mic" size={20} color="#294A9B" />}
           title="음성 기록"
@@ -112,7 +107,6 @@ export default function CentralPanel() {
           rightBottom="5 days ago"
           onPress={() => openScreen("question")}
         />
-
         <Card
           icon={<MaterialCommunityIcons name="chart-line" size={20} color="#294A9B" />}
           title="건강 데이터"
@@ -122,20 +116,19 @@ export default function CentralPanel() {
           onPress={() => openScreen("health-data")}
         />
 
-        {/* 3행 (placeholder) */}
+        {/* 3행 */}
+        <Card
+          icon={<Ionicons name="send-outline" size={20} color="#294A9B" />}
+          title="병원 전송 (수신)"
+          titleColor="#294A9B"
+          desc={"병원/기간 선택 → 목록"}
+          onPress={() => openScreen("receive")}
+        />
         <Card
           icon={<Ionicons name="information-circle" size={20} color="#294A9B" />}
-          title="건강"
+          title="안내"
           titleColor="#294A9B"
-          desc={"Health record sent\n3days ago"}
-          onPress={() => {}}
-        />
-
-        <Card
-          icon={<Ionicons name="medkit" size={20} color="#294A9B" />}
-          title="병원 전송"
-          titleColor="#294A9B"
-          desc={"Health record sent"}
+          desc={"받은 결과를 확인하세요"}
           onPress={() => {}}
         />
       </View>
@@ -143,23 +136,16 @@ export default function CentralPanel() {
       {/* 스크림 + 슬라이드 상세 패널 (가로 95%, 라운드) */}
       {active && (
         <>
-          {/* 아주 옅은 배경 음영 */}
           <Animated.View
             pointerEvents="none"
             style={[StyleSheet.absoluteFill, styles.scrim, { opacity: scrimOpacity }]}
           />
-          {/* 바깥 터치로 닫기 */}
           <Pressable style={StyleSheet.absoluteFill} onPress={closeScreen} />
 
-          {/* 패널 */}
           <Animated.View
             style={[
               styles.overlayPanel,
-              {
-                width: SCREEN_W * 0.95,
-                left: SCREEN_W * 0.025, // 가운데 정렬
-                transform: [{ translateX }],
-              },
+              { width: SCREEN_W * 0.95, left: SCREEN_W * 0.025, transform: [{ translateX }] },
             ]}
           >
             {/* 헤더 */}
@@ -167,12 +153,10 @@ export default function CentralPanel() {
               <TouchableOpacity style={styles.iconBtn} onPress={closeScreen} activeOpacity={0.9}>
                 <Ionicons name="chevron-back" size={20} color="#1F2937" />
               </TouchableOpacity>
-
               <View style={{ flex: 1 }}>
                 <Text style={styles.headerTitle}>{headerTitle}</Text>
                 <Text style={styles.headerSub}>{headerSub}</Text>
               </View>
-
               <View style={styles.headerBadge}>
                 <Text style={styles.headerBadgeText}>{headerBadge}</Text>
               </View>
@@ -186,6 +170,8 @@ export default function CentralPanel() {
               {active === "voice" && <VoiceRecordScreen />}
               {active === "question" && <QuestionScreen />}
               {active === "health-data" && <HealthDataScreen />}
+              {active === "receive" && <ReceiveScreen />}
+              {/* 필요하면 ReceiveDetailScreen을 슬라이드 안에서도 재사용 가능 */}
             </View>
           </Animated.View>
         </>
@@ -196,21 +182,10 @@ export default function CentralPanel() {
 
 /* ───── 공통 카드 ───── */
 function Card({
-  icon,
-  title,
-  titleColor = "#1A2D6B",
-  desc,
-  rightBottom,
-  onPress,
-  style,
+  icon, title, titleColor = "#1A2D6B", desc, rightBottom, onPress, style,
 }: {
-  icon: React.ReactNode;
-  title: string;
-  titleColor?: string;
-  desc?: React.ReactNode | string;
-  rightBottom?: string;
-  onPress?: () => void;
-  style?: any;
+  icon: React.ReactNode; title: string; titleColor?: string;
+  desc?: React.ReactNode | string; rightBottom?: string; onPress?: () => void; style?: any;
 }) {
   return (
     <TouchableOpacity style={[styles.card, style]} onPress={onPress} activeOpacity={0.88}>
@@ -225,7 +200,6 @@ function Card({
 }
 
 const styles = StyleSheet.create({
-  /* 카드 그리드 */
   grid: {
     marginTop: 18,
     paddingHorizontal: 16,
@@ -247,90 +221,35 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 2,
   },
-  cardHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 6,
-  },
+  cardHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 },
   iconBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: "#D7E5FF",
-    alignItems: "center",
-    justifyContent: "center",
+    width: 28, height: 28, borderRadius: 14, backgroundColor: "#D7E5FF",
+    alignItems: "center", justifyContent: "center",
   },
   cardTitle: { fontSize: 16, fontWeight: "800" },
   cardDesc: { fontSize: 12, color: "#556070", marginTop: 4, lineHeight: 16 },
-  rightBottom: {
-    position: "absolute",
-    right: 10,
-    bottom: 8,
-    fontSize: 11,
-    color: "#7C8CB8",
-    fontWeight: "600",
-  },
+  rightBottom: { position: "absolute", right: 10, bottom: 8, fontSize: 11, color: "#7C8CB8", fontWeight: "600" },
 
-  /* 아주 옅은 스크림 */
-  scrim: {
-    backgroundColor: "#000",
-  },
-
-  /* 95% 폭 오버레이 패널 */
+  scrim: { backgroundColor: "#000" },
   overlayPanel: {
-    position: "absolute",
-    top: 16,
-    bottom: 16,
-    backgroundColor: "#fff",
-    borderRadius: 22,
-    overflow: "hidden",
-
-    // 그림자
-    shadowColor: "#000",
-    shadowOpacity: 0.12,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 12,
-    elevation: 9,
+    position: "absolute", top: 16, bottom: 16, backgroundColor: "#fff",
+    borderRadius: 22, overflow: "hidden",
+    shadowColor: "#000", shadowOpacity: 0.12, shadowOffset: { width: 0, height: 2 }, shadowRadius: 12, elevation: 9,
   },
 
-  /* 패널 헤더 */
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingHorizontal: 16,
-    paddingTop: 14,
-    paddingBottom: 8,
-  },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 16, paddingTop: 14, paddingBottom: 8 },
   iconBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#F3F4F6",
-    alignItems: "center",
-    justifyContent: "center",
+    width: 36, height: 36, borderRadius: 18, backgroundColor: "#F3F4F6",
+    alignItems: "center", justifyContent: "center",
   },
   headerTitle: { fontSize: 16, fontWeight: "800", color: "#111827" },
   headerSub: { fontSize: 12, color: "#6B7280", marginTop: 2 },
   headerBadge: {
-    backgroundColor: "#EEF2FF",
-    borderWidth: 1,
-    borderColor: "#DDE3FF",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999,
+    backgroundColor: "#EEF2FF", borderWidth: 1, borderColor: "#DDE3FF",
+    paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999,
   },
   headerBadgeText: { color: "#294A9B", fontWeight: "800", fontSize: 11 },
 
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#E5E7EB",
-  },
-
-  /* 콘텐츠 래퍼 (패널 내부 패딩) */
-  contentWrap: {
-    flex: 1,
-    padding: 12,
-  },
+  divider: { height: StyleSheet.hairlineWidth, backgroundColor: "#E5E7EB" },
+  contentWrap: { flex: 1, padding: 12 },
 });

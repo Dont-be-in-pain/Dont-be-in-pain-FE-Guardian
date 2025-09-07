@@ -56,7 +56,7 @@ export default function QuestionScreen() {
       <View style={styles.hero}>
         <Text style={styles.title}>질문지</Text>
         <Text style={styles.sub}>
-          보호자가 환자 상태에 대해 궁금한 점을 적어주세요. 나중에 의사에게 전송됩니다.
+          보호자가 환자 상태에 대해 궁금한 점을 적어주세요. 나중에 환자에게 전송됩니다.
         </Text>
 
         <View style={styles.actions}>
