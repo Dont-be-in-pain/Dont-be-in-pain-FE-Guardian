@@ -7,14 +7,14 @@ import TopPanel from "../components/layout/TopPanel";
 export default function HomeLayout() {
   return (
     <SafeAreaView style={styles.wrap} edges={["top"]}>
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView >
         <TopPanel />
         <CentralPanel />
         <View style={styles.dividerRow}>
           <View style={styles.bottomLine} />
         </View>
+        <BottomPanel />
       </ScrollView>
-      <BottomPanel />
     </SafeAreaView>
   );
 }
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   wrap: { flex: 1, backgroundColor: "#F4F6FF" },
 
   // BottomPanel이 살짝 떠 있으므로 여유 패딩을 넉넉히 줌
-  scroll: { paddingBottom: 140 },
+  scroll: { paddingBottom: 180 },
   dividerRow: {
     flexBasis: "100%",
     alignItems: "center",

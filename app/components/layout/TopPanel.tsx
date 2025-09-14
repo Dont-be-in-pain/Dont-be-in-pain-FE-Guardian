@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function TopPanel() {
   return (
@@ -32,7 +32,7 @@ export default function TopPanel() {
 const styles = StyleSheet.create({
   header1: {
     backgroundColor: "rgba(211, 225, 245, 0.3)",
-    height: 100,
+    height: 60,
   },
   header: {
     backgroundColor: "#D3E1F5",
@@ -41,8 +41,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 18,
     width: "90%",
     alignSelf: "center",
-    marginTop: -80, // 위의 라이트 블루 배경과 겹치도록
+    marginTop: -50, // 위의 라이트 블루 배경과 겹치도록
     height: 100,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 10,
   },
   logoRow: {
     flexDirection: "row",   // 가로 정렬
@@ -58,7 +62,7 @@ const styles = StyleSheet.create({
   brand: { fontSize: 22, fontWeight: "800", color: "#1E3D8F" },
 
   patientCard: {
-    marginTop: -26,
+    marginTop: -40,
     backgroundColor: "#FFFFFF",
     borderRadius: 8,
     paddingVertical: 16,

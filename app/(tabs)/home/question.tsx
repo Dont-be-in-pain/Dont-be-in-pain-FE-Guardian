@@ -1,16 +1,16 @@
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Speech from "expo-speech";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
+  ActivityIndicator,
   Alert,
   ScrollView,
-  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import * as Speech from "expo-speech";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const QUICK_CHIPS = ["발열", "기침", "호흡곤란", "식욕저하", "수면", "복약 누락"];
 

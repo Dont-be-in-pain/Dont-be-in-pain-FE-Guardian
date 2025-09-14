@@ -1,22 +1,21 @@
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useRef, useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
   Animated,
   Dimensions,
   Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 // 상세 화면
+import HealthDataScreen from "../../(tabs)/home/health-data";
+import QuestionScreen from "../../(tabs)/home/question";
+import ReceiveScreen from "../../(tabs)/home/receive"; // ← 수신(필터+목록)
 import StatusScreen from "../../(tabs)/home/status";
 import VoiceRecordScreen from "../../(tabs)/home/voice";
-import QuestionScreen from "../../(tabs)/home/question";
-import HealthDataScreen from "../../(tabs)/home/health-data";
-import ReceiveScreen from "../../(tabs)/home/receive"; // ← 수신(필터+목록)
-import ReceiveDetailScreen from "../../(tabs)/home/recieve-detail"; // (옵션) 슬라이드 내에서 상세 띄우고 싶을 때
 
 const { width: SCREEN_W } = Dimensions.get("window");
 
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "48%",
-    height: 120,
+    height: 135,
     backgroundColor: "#D3E1F5",
     borderRadius: 16,
     padding: 14,

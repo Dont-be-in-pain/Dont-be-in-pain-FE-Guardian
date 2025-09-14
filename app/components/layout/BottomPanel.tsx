@@ -1,7 +1,7 @@
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function BottomPanel() {
   const router = useRouter();
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    bottom: 80,
+    bottom: -90, 
     backgroundColor: "#F4F6FF",
   },
   container: {
